@@ -2,6 +2,7 @@ import expenses from "../../data/expenses";
 import { useUser } from "../../context/UserContext";
 import { useState } from "react";
 import ExpenseList from "./ExpenseList/ExpenseList";
+import MultiSelectOverlay from "./MultiSelectOverlay/MultiSelectOverlay";
 
 const Expenses = () => {
   const { currentUser, setCurrentUser } = useUser();
@@ -75,7 +76,6 @@ const Expenses = () => {
 
   return (
     <>
-      <h1>Expenses</h1>
       <p>
         Status: You paid {sum_me}€.
         {total === 0
@@ -84,36 +84,16 @@ const Expenses = () => {
           ? ` You owe ${otherUser} ${Math.abs(total)}€`
           : ` ${otherUser} owes you ${total}€`}
       </p>
-      <p>
-        Archive expense(s). (Select "archive" on one or multiple expenses and
-        add reason for archiving. Example: not relevant, settled otherwise etc)
-      </p>
-      <p>
-        Settle expense(s). (Pick and choose or select all to settle. All settled
-        expenses are archived)
-      </p>
-      <p>
-        Dispute expense(s). (Select one or multiple and suggest change to
-        expense)
-      </p>
 
-      {multiSelect ? (
-        <div>
-          <div>
-            <button onClick={() => selectAll()}>
-              {expenses.length === selectedItems.length ? "Des" : "S"}elect all
-            </button>
-            <button onClick={() => cancelSelection()}>Cancel</button>
-          </div>
-          <div>
-            <button>Archive expenses</button>
-            <button>Settle expenses</button>
-            <button>Dispute expenses</button>
-          </div>
-        </div>
-      ) : (
-        <button onClick={() => setMultiSelect(true)}>Select multiple</button>
-      )}
+      <MultiSelectOverlay
+        multiSelect={multiSelect}
+        selectAll={() => selectAll()}
+        expenses={expenses}
+        selectedItems={selectedItems}
+        cancelSelection={() => cancelSelection()}
+        setMultiSelect={() => setMultiSelect(true)}
+      />
+
       <div>
         <div className="expense expense-mine">
           <ExpenseList

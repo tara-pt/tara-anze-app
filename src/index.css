@@ -2,22 +2,20 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(255, 255, 255, 0.8);
   background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+#root {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 74px 2rem 2rem;
+  text-align: center;
 }
 
 body {
@@ -29,8 +27,13 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 52px;
   line-height: 1.1;
+}
+
+h2 {
+  font-size: 24px;
+  margin-block: 16px;
 }
 
 button {
@@ -41,15 +44,207 @@ button {
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
+  color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
+
+.floating-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+.floating-button.fill-height {
+  bottom: 0;
+}
+
+.multiselect {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.multiselect button {
+  border-radius: 0;
+}
+
+.expense-all {
+  padding: 0;
+  margin: 0;
+}
+
+.expense-all li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  margin-block: 20px;
+  width: calc(100% - 42px);
+  margin-left: auto;
+}
+
+.expense.expense-mine h2 .checkbox,
+.expense.expense-other h2 .checkbox {
+  position: relative;
+  left: 0;
+  top: 0;
+}
+
+.expense .checkbox {
+  position: absolute;
+  left: -42px;
+  width: 42px;
+  height: 42px;
+  background-color: transparent;
+}
+
+.expense .checkbox::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid grey;
+  border-radius: 2px;
+}
+
+.expense .checkbox::after {
+  content: "X";
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  font-size: 16px;
+}
+
+.expense .checkbox.checked::after {
+  display: block;
+}
+
+.expense-item {
+  width: 100%;
+  cursor: pointer;
+  border: 1px solid grey;
+  border-radius: 20px;
+}
+
+.expense-item .main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.expense-item.selected .main {
+  background-color: #ffffff15;
+}
+
+.expense-item.selected .main .info .date,
+.expense-item.selected .chevron {
+  background-color: #ffffff25;
+}
+
+.expense-item.expanded .main {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.expense-item .main .info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.expense-item .main .info .date {
+  font-size: 10px;
+  display: inline-block;
+  height: fit-content;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background-color: #343434;
+}
+
+@media (prefers-color-scheme: light) {
+  .expense-item .main .info .date {
+    background-color: #ebebeb;
+  }
+}
+
+.expense-item .main .info .name {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.expense-item .details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+  transition: all 0.4s ease-in-out;
+  overflow: hidden;
+}
+
+.expense-item .details button {
+  width: fit-content;
+}
+
+.expense-item.expanded .details {
+  max-height: 500px;
+  opacity: 1;
+  padding: 10px;
+}
+
+.expense-item.collapsed .details {
+  max-height: 0;
+  opacity: 0;
+}
+
+.expense-item .details-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.expense-item .details-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.expense-item .chevron {
+  position: relative;
+  display: block;
+  width: 42px;
+  height: 42px;
+}
+
+.expense-item .chevron::before {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -65%) rotate(-45deg);
+  content: "";
+  width: 10px;
+  height: 10px;
+  display: block;
+  border: 4px solid #343434;
+  border-radius: 2px;
+  border-top: none;
+  border-right: none;
+  transition: all 0.3s ease;
+}
+
+.expense-item.expanded .chevron::before {
+  transform: translate(-35%, -50%) rotate(45deg);
 }
 
 @media (prefers-color-scheme: light) {
@@ -62,5 +257,30 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+    color: black;
+  }
+  .expense-item .main {
+    background-color: #f9f9f9;
+  }
+
+  .expense-item .chevron {
+    background-color: #e9e9e9;
+  }
+
+  .expense-item .chevron::before {
+    border: 4px solid black;
+  }
+
+  .expense-item.selected .main {
+    background-color: #ffeacb;
+  }
+
+  .expense-item.selected .main .info .date,
+  .expense-item.selected .chevron {
+    background-color: white;
+  }
+
+  .expense .checkbox::before {
+    border: 2px solid black;
   }
 }

@@ -14,13 +14,15 @@ const ExpenseList = ({
   return (
     <>
       <h2>
-        {multiSelect && (
-          <button
-            className={`checkbox ${allSelected ? "checked" : ""}`}
-            onClick={selectAllUser}
-          ></button>
-        )}
-        {title}
+        <button
+          className={`checkbox ${allSelected ? "checked" : ""}`}
+          onClick={selectAllUser}
+          style={{
+            opacity: multiSelect ? 1 : 0,
+            pointerEvents: multiSelect ? "all" : "none",
+          }}
+        ></button>
+        <span>{title}</span>
       </h2>
       <ul className="expense-all">
         {userExpenses.map((exp) => (

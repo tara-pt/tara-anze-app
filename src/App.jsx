@@ -1,8 +1,9 @@
 import { useState } from "react";
-import "./App.css";
 import Expenses from "./components/Expenses/Expenses";
 import Events from "./components/Events/Events";
 import { UserProvider } from "./context/UserContext";
+import FloatingButton from "./components/FloatingButton/FloatingButton";
+import { BiArrowBack } from "react-icons/bi";
 
 function App() {
   const [showScreen, setShowScreen] = useState("home");
@@ -15,7 +16,9 @@ function App() {
           <button onClick={() => setShowScreen("events")}>Events</button>
         </div>
       ) : (
-        <button onClick={() => setShowScreen("home")}>Go back</button>
+        <FloatingButton onClick={() => setShowScreen("home")}>
+          <BiArrowBack />
+        </FloatingButton>
       )}
       {showScreen === "expenses" && <Expenses />}
       {showScreen === "events" && <Events />}
