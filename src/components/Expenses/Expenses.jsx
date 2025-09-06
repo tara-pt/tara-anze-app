@@ -1,39 +1,23 @@
 import expenses from "../../data/expenses";
 import { useUser } from "../../context/UserContext";
 import { useState } from "react";
-import ExpenseList from "./ExpenseList/ExpenseList";
-import MultiSelectOverlay from "./MultiSelectOverlay/MultiSelectOverlay";
+import MultiSelect from "./MultiSelect/MultiSelect";
+import Toggle from "../Toggle/Toggle";
+import ExpenseListByUser from "./ExpenseListByUser/ExpenseListByUser";
+import ExpenseListByDate from "./ExpenseListByDate/ExpenseListByDate";
+import Balance from "./Balance/Balance";
+import ActionOverlay from "../ActionOverlay/ActionOverlay";
 
 const Expenses = () => {
   const { currentUser, setCurrentUser } = useUser();
+  const [toggleToDate, setToggleToDate] = useState(false);
   const [multiSelect, setMultiSelect] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const otherUser = currentUser === "Tara" ? "Anze" : "Tara";
 
-  // SELECT AND CALCULATE EXPENSES
-
-  const sum_me = expenses
-    .filter((expense) => !expense.archived && expense.paid_by === currentUser)
-    .reduce((sum, expense) => sum + expense.value, 0);
-
-  const sum_you = expenses
-    .filter((expense) => !expense.archived && expense.paid_by !== currentUser)
-    .reduce((sum, expense) => sum + expense.value, 0);
-
-  const currentUserExpenses = expenses.filter(
-    (expense) => !expense.archived && expense.paid_by === currentUser
-  );
-
-  const otherUserExpenses = expenses.filter(
-    (expense) => !expense.archived && expense.paid_by === otherUser
-  );
-
-  const total = sum_me - sum_you;
-
   // FUNCTIONS FOR SELECTING ITEMS
 
   const selectItem = (item_id) => {
-    console.log(selectedItems);
     setSelectedItems((prev) =>
       prev.includes(item_id)
         ? prev.filter((i) => i !== item_id)
@@ -54,67 +38,50 @@ const Expenses = () => {
     }
   };
 
-  const selectAllUser = (user) => {
-    const userExpenseIds = expenses
-      .filter((exp) => exp.paid_by === user && !exp.archived)
-      .map((exp) => exp.id);
-
-    const allSelected = userExpenseIds.every((id) =>
-      selectedItems.includes(id)
-    );
-
-    if (allSelected) {
-      setSelectedItems((prev) =>
-        prev.filter((id) => !userExpenseIds.includes(id))
-      );
-    } else {
-      setSelectedItems((prev) =>
-        Array.from(new Set([...prev, ...userExpenseIds]))
-      );
-    }
-  };
-
   return (
     <>
-      <p>
-        Status: You paid {sum_me}€.
-        {total === 0
-          ? " All expenses settled."
-          : total < 0
-          ? ` You owe ${otherUser} ${Math.abs(total)}€`
-          : ` ${otherUser} owes you ${total}€`}
-      </p>
-
-      <MultiSelectOverlay
-        multiSelect={multiSelect}
-        selectAll={() => selectAll()}
+      <Balance
         expenses={expenses}
-        selectedItems={selectedItems}
-        cancelSelection={() => cancelSelection()}
-        setMultiSelect={() => setMultiSelect(true)}
+        currentUser={currentUser}
+        otherUser={otherUser}
       />
+      <ActionOverlay position={"right"}>
+        <MultiSelect
+          multiSelect={multiSelect}
+          selectAll={() => selectAll()}
+          expenses={expenses}
+          selectedItems={selectedItems}
+          cancelSelection={() => cancelSelection()}
+          setMultiSelect={() => setMultiSelect(true)}
+        />
+        <div className="expense-toggle-wrapper">
+          <Toggle
+            isOn={toggleToDate}
+            onToggle={() => setToggleToDate(!toggleToDate)}
+          />
+        </div>
+      </ActionOverlay>
 
       <div>
-        <div className="expense expense-mine">
-          <ExpenseList
-            title={"My expenses"}
-            userExpenses={currentUserExpenses}
+        {toggleToDate ? (
+          <ExpenseListByDate
+            expenses={expenses}
             onSelectItem={selectItem}
             multiSelect={multiSelect}
             selectedItems={selectedItems}
-            selectAllUser={() => selectAllUser(currentUser)}
+            setSelectedItems={setSelectedItems}
           />
-        </div>
-        <div className="expense expense-other">
-          <ExpenseList
-            title={`${otherUser}'s expenses`}
-            userExpenses={otherUserExpenses}
+        ) : (
+          <ExpenseListByUser
+            expenses={expenses}
             onSelectItem={selectItem}
             multiSelect={multiSelect}
             selectedItems={selectedItems}
-            selectAllUser={() => selectAllUser(otherUser)}
+            setSelectedItems={setSelectedItems}
+            currentUser={currentUser}
+            otherUser={otherUser}
           />
-        </div>
+        )}
       </div>
     </>
   );

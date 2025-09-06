@@ -59,6 +59,16 @@ const expenses = [
     split: 0.5,
     archived: false,
   },
+  {
+    id: 6,
+    paid_by: "Tara",
+    name: "popcorn",
+    value: 7.3,
+    date: "2025-08-11T18:00:00Z",
+    extraInfo: "aa",
+    split: 0.5,
+    archived: false,
+  },
 ];
 
 export default expenses;

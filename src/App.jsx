@@ -16,7 +16,7 @@ function App() {
           <button onClick={() => setShowScreen("events")}>Events</button>
         </div>
       ) : (
-        <FloatingButton onClick={() => setShowScreen("home")}>
+        <FloatingButton onClick={() => setShowScreen("home")} sticky={true}>
           <BiArrowBack />
         </FloatingButton>
       )}

@@ -1,8 +1,15 @@
-const FloatingButton = ({ onClick, fillHeight = false, children }) => {
+const FloatingButton = ({
+  onClick,
+  fillHeight = false,
+  sticky = false,
+  children,
+}) => {
   return (
     <button
       onClick={onClick}
-      className={`floating-button ${fillHeight ? "fill-height" : ""}`}
+      className={`floating-button ${fillHeight ? "fill-height" : ""} ${
+        sticky ? "sticky" : ""
+      }`}
     >
       {children}
     </button>

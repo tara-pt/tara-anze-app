@@ -32,8 +32,11 @@ h1 {
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 20px;
   margin-block: 16px;
+  text-align: left;
+  line-height: 1;
+  margin-top: 0;
 }
 
 button {
@@ -57,17 +60,18 @@ button {
   border-radius: 0;
 }
 
+.floating-button.sticky {
+  position: fixed;
+  z-index: 9;
+}
+
 .floating-button.fill-height {
   bottom: 0;
 }
 
 .multiselect {
-  position: absolute;
-  top: 0;
-  right: 0;
   display: flex;
   flex-direction: column;
-  z-index: 10;
 }
 
 .multiselect button {
@@ -89,8 +93,7 @@ button {
   margin-left: auto;
 }
 
-.expense.expense-mine h2 .checkbox,
-.expense.expense-other h2 .checkbox {
+.expense.expense-title h2 .checkbox {
   position: relative;
   left: 0;
   top: 0;
@@ -136,6 +139,17 @@ button {
   border-radius: 20px;
 }
 
+.expense-item .item-paid-by {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.expense-item .paid-by {
+  font-size: 12px;
+  line-height: 1;
+}
+
 .expense-item .main {
   display: flex;
   align-items: center;
@@ -159,9 +173,18 @@ button {
 }
 
 .expense-item .main .info {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.expense-item .main .value {
+  font-weight: bold;
+  font-size: 22px;
+  display: block;
+  margin-left: auto;
+  margin-right: 16px;
 }
 
 .expense-item .main .info .date {
@@ -171,12 +194,6 @@ button {
   padding: 2px 4px;
   border-radius: 4px;
   background-color: #343434;
-}
-
-@media (prefers-color-scheme: light) {
-  .expense-item .main .info .date {
-    background-color: #ebebeb;
-  }
 }
 
 .expense-item .main .info .name {
@@ -247,6 +264,136 @@ button {
   transform: translate(-35%, -50%) rotate(45deg);
 }
 
+.expense-toggle-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.balance-value {
+  position: relative;
+  font-size: 42px;
+  cursor: pointer;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.balance-value.positive {
+  color: green;
+}
+
+.balance-value.negative {
+  color: darkred;
+}
+
+.balance-value svg {
+  position: absolute;
+  top: 0;
+  font-size: 16px;
+  right: -20px;
+  color: black;
+  transition: opacity 0.3s ease;
+}
+
+.balance {
+  display: flex;
+  flex-direction: column;
+}
+
+.balance .more-info {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.balance .more-info span {
+  position: relative;
+  font-size: 14px;
+}
+
+.balance .more-info span::after {
+  content: "-";
+  position: absolute;
+  right: -16px;
+}
+
+.balance .more-info span:last-child::after {
+  display: none;
+}
+
+.balance .more-info.expanded {
+  opacity: 1;
+}
+
+.action-overlay {
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+}
+
+.action-overlay.left {
+  left: 8px;
+}
+
+.action-overlay.right {
+  right: 8px;
+}
+
+.action-overlay.fill {
+  left: 8px;
+  right: 8px;
+  width: 100%;
+}
+
+.toggle {
+  position: relative;
+  display: flex;
+  padding: 0;
+  border-radius: 20px;
+  background-color: #efefef;
+  height: fit-content;
+}
+
+.toggle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  border-radius: 20px;
+  width: 50%;
+  height: 100%;
+  background-color: #a5a5a5;
+  transition: left 0.3s ease;
+}
+
+.toggle.active::before {
+  left: 50%;
+}
+
+.toggle .option:first-child {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+.toggle.active .option:first-child {
+  -webkit-filter: invert(0);
+  filter: invert(0);
+}
+
+.toggle.active .option:last-child {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+.toggle .option {
+  padding: 10px 14px;
+  transition: filter 0.3s ease;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -263,12 +410,18 @@ button {
     background-color: #f9f9f9;
   }
 
+  .expense-item .main .info .date {
+    background-color: #ebebeb;
+  }
+
   .expense-item .chevron {
     background-color: #e9e9e9;
   }
 
   .expense-item .chevron::before {
     border: 4px solid black;
+    border-top: none;
+    border-right: none;
   }
 
   .expense-item.selected .main {
@@ -282,5 +435,53 @@ button {
 
   .expense .checkbox::before {
     border: 2px solid black;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .floating-button.sticky {
+    text-align: left;
+  }
+  .expense-all li {
+    width: calc(100% - 24px);
+  }
+  .expense-item .item-paid-by {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0px;
+  }
+
+  .balance {
+    justify-content: center;
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .balance-value {
+    margin: 0 0 0 16px;
+  }
+
+  .balance .more-info {
+    gap: 2px;
+    flex-direction: column;
+    align-items: baseline;
+    width: 0;
+    transition: width 0.5s ease-out, opacity 0.3s ease;
+    overflow: hidden;
+    height: 60px;
+    transition-delay: 0s, 0;
+    transition-duration: 0.5s, 0.15s;
+  }
+
+  .balance .more-info.expanded {
+    transition-delay: 0s, 0.4s;
+    transition-duration: 0.5s, 0.3s;
+    width: 50%;
+  }
+  .balance .more-info span {
+    font-size: 10px;
+  }
+  .balance .more-info span::after {
+    display: none;
   }
 }

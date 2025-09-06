@@ -2,13 +2,15 @@ import ExpenseItem from "../ExpenseItem/ExpenseItem";
 
 const ExpenseList = ({
   title,
-  userExpenses,
+  currentExpenses,
   multiSelect,
   onSelectItem,
   selectedItems,
-  selectAllUser,
+  selectAllCurrent,
+  showUserInfo = false,
+  showDate = true,
 }) => {
-  const allSelected = userExpenses.every((exp) =>
+  const allSelected = currentExpenses.every((exp) =>
     selectedItems.includes(exp.id)
   );
   return (
@@ -16,7 +18,7 @@ const ExpenseList = ({
       <h2>
         <button
           className={`checkbox ${allSelected ? "checked" : ""}`}
-          onClick={selectAllUser}
+          onClick={selectAllCurrent}
           style={{
             opacity: multiSelect ? 1 : 0,
             pointerEvents: multiSelect ? "all" : "none",
@@ -25,7 +27,7 @@ const ExpenseList = ({
         <span>{title}</span>
       </h2>
       <ul className="expense-all">
-        {userExpenses.map((exp) => (
+        {currentExpenses.map((exp) => (
           <li key={exp.id}>
             {multiSelect && (
               <button
@@ -38,6 +40,8 @@ const ExpenseList = ({
             <ExpenseItem
               data={exp}
               isSelected={selectedItems.includes(exp.id)}
+              showUserInfo={showUserInfo}
+              showDate={showDate}
             />
           </li>
         ))}

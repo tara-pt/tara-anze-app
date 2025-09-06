@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { useUser } from "../../../context/UserContext";
+import { BiArchiveIn } from "react-icons/bi";
+import { BiMoneyWithdraw } from "react-icons/bi";
+import { BiTrash } from "react-icons/bi";
+import { BiEdit } from "react-icons/bi";
 
 function formatDateTime(isoString) {
   const dateObj = new Date(isoString);
@@ -18,7 +22,7 @@ function formatDateTime(isoString) {
   return { date, time };
 }
 
-const ExpenseItem = ({ data, isSelected }) => {
+const ExpenseItem = ({ data, isSelected, showUserInfo, showDate }) => {
   const { currentUser, setCurrentUser } = useUser();
   const [isExpanded, setIsExpanded] = useState(false);
   const { date, time } = formatDateTime(data.date);
@@ -31,8 +35,20 @@ const ExpenseItem = ({ data, isSelected }) => {
     >
       <div className="main" onClick={() => setIsExpanded(!isExpanded)}>
         <div className="info">
-          <span className="date">{date}</span>
-          <span className="name">{data.name}:</span>
+          <span className="date">{showDate ? date : time}</span>
+          <div className="item-paid-by">
+            <span className="name">{data.name}</span>
+            {showUserInfo && (
+              <span className="paid-by">
+                paid by{" "}
+                <b>
+                  {data.paid_by}
+                  {data.paid_by === currentUser ? " (me)" : ""}
+                </b>
+              </span>
+            )}
+          </div>
+
           <span className="value">{data.value}€</span>
         </div>
         <div className="more">
@@ -49,13 +65,20 @@ const ExpenseItem = ({ data, isSelected }) => {
           <span>Split: {data.split * 100}%</span>
         </div>
         <div className="details-buttons">
-          <button>Settle</button>
-          <button>Archive</button>
-          {currentUser !== data.paid_by && <button>Dispute</button>}
+          <button>
+            <BiMoneyWithdraw />
+          </button>
+          <button>
+            <BiArchiveIn />
+          </button>
           {currentUser === data.paid_by && (
             <>
-              <button>Edit</button>
-              <button>Delete</button>
+              <button>
+                <BiEdit />
+              </button>
+              <button>
+                <BiTrash />
+              </button>
             </>
           )}
         </div>

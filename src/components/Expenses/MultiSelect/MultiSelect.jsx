@@ -2,7 +2,7 @@ import { BiArchiveIn } from "react-icons/bi";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { BiSelectMultiple } from "react-icons/bi";
 
-const MultiSelectOverlay = ({
+const MultiSelect = ({
   multiSelect,
   selectedItems,
   expenses,
@@ -10,6 +10,8 @@ const MultiSelectOverlay = ({
   setMultiSelect,
   cancelSelection,
 }) => {
+  const setOpacityForMultiple = expenses.length === selectedItems.length;
+  const setOpacityForOthers = selectedItems.length > 0;
   return (
     <div className="multiselect">
       {multiSelect ? (
@@ -18,15 +20,23 @@ const MultiSelectOverlay = ({
           <button onClick={selectAll}>
             <BiSelectMultiple
               style={{
-                opacity: expenses.length === selectedItems.length ? 1 : 0.5,
+                opacity: setOpacityForMultiple ? 1 : 0.5,
               }}
             />
           </button>
           <button>
-            <BiMoneyWithdraw />
+            <BiMoneyWithdraw
+              style={{
+                opacity: setOpacityForOthers ? 1 : 0.5,
+              }}
+            />
           </button>
           <button>
-            <BiArchiveIn />
+            <BiArchiveIn
+              style={{
+                opacity: setOpacityForOthers ? 1 : 0.5,
+              }}
+            />
           </button>
         </>
       ) : (
@@ -36,4 +46,4 @@ const MultiSelectOverlay = ({
   );
 };
 
-export default MultiSelectOverlay;
+export default MultiSelect;
