@@ -10,6 +10,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 #root {
   max-width: 1280px;
   width: 100%;
@@ -78,16 +82,21 @@ button {
   border-radius: 0;
 }
 
-.expense-all {
+/* EXPENSES START */
+
+ul {
   padding: 0;
   margin: 0;
+}
+
+li {
+  list-style-type: none;
 }
 
 .expense-all li {
   position: relative;
   display: flex;
   align-items: center;
-  list-style-type: none;
   margin-block: 20px;
   width: calc(100% - 42px);
   margin-left: auto;
@@ -393,6 +402,101 @@ button {
   padding: 10px 14px;
   transition: filter 0.3s ease;
 }
+
+/* EXPENSES END */
+
+/* CALENDAR START */
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(5, 100px);
+}
+
+.calendar-grid > div {
+  border: 1px solid black;
+  width: 100%;
+  height: 100%;
+}
+
+.calendar-grid .calendar-cell {
+  position: relative;
+  padding: 4px 8px;
+}
+
+.calendar-grid .calendar-cell .day-number {
+  position: absolute;
+  top: 0;
+  right: 4px;
+}
+
+.calendar-grid .calendar-cell li {
+  text-align: left;
+}
+
+.calendar-grid .calendar-cell.other-month {
+  background-color: #f3f3f3;
+}
+
+.calendar-grid .calendar-cell.has-event {
+  background-color: #d7e6ff;
+}
+
+.calendar-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  background-color: #00000035;
+}
+
+.calendar-content {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 1px 8px #0000004f;
+}
+
+.close-modal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 42px;
+  height: 42px;
+  background-color: transparent;
+}
+
+.close-modal::before,
+.close-modal::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 18px;
+  width: 20px;
+  height: 2px;
+  background-color: black;
+}
+
+.close-modal::before {
+  transform: rotate(-45deg);
+}
+
+.close-modal::after {
+  transform: rotate(45deg);
+}
+
+/* CALENDAR END */
 
 @media (prefers-color-scheme: light) {
   :root {
