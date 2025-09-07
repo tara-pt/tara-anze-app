@@ -40,7 +40,7 @@ const ExpenseListByUser = ({
     <>
       <div className="expense expense-title">
         <ExpenseList
-          title={"My expenses"}
+          title={"Paid by me"}
           currentExpenses={currentUserExpenses}
           onSelectItem={onSelectItem}
           multiSelect={multiSelect}
@@ -50,7 +50,7 @@ const ExpenseListByUser = ({
       </div>
       <div className="expense expense-title">
         <ExpenseList
-          title={`${otherUser}'s expenses`}
+          title={`Paid by ${otherUser}`}
           currentExpenses={otherUserExpenses}
           onSelectItem={onSelectItem}
           multiSelect={multiSelect}
