@@ -4,23 +4,7 @@ import { BiArchiveIn } from "react-icons/bi";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { BiTrash } from "react-icons/bi";
 import { BiEdit } from "react-icons/bi";
-
-function formatDateTime(isoString) {
-  const dateObj = new Date(isoString);
-
-  const date = dateObj.toLocaleDateString("sl-SI", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
-
-  const time = dateObj.toLocaleTimeString("sl-SI", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  return { date, time };
-}
+import { formatDateTime } from "../../../functions/formatDateTime";
 
 const ExpenseItem = ({ data, isSelected, showUserInfo, showDate }) => {
   const { currentUser, setCurrentUser } = useUser();

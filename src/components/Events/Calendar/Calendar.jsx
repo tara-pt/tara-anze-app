@@ -56,6 +56,10 @@ const Calendar = ({ month, year }) => {
         const index = firstDay + (day - 1);
         if (calendar[index]) {
           calendar[index].events.push(event);
+
+          calendar[index].events.sort((a, b) => {
+            return new Date(a.dateTime) - new Date(b.dateTime);
+          });
         }
       }
     });
@@ -80,7 +84,11 @@ const Calendar = ({ month, year }) => {
         />
       )}
       <FloatingButton></FloatingButton>
-      <div className="header"></div>
+      <h2 className="calendar-header">
+        {new Intl.DateTimeFormat("sl", { month: "long" }).format(
+          new Date(2025, month - 1, 1)
+        )}
+      </h2>
       <div className="weekdays">
         {weekdays.map((day) => (
           <div>{day}</div>
@@ -101,10 +109,7 @@ export default Calendar;
 
 /*
 TODO:
-- get all days for this month
-- see which day the 1st starts on, then fill out the left-side with greyed out previous month days
-- see which day the last day is, then fill out the right side with greyed out next month days
-- for all divs, write the number of the day
-- for every month that has events, color the div in an active color and write down event details
-- on click, more info is shown fullscreen or in a modal
+- add editing options for calendar modal (add & edit event)
+- add month heading ✅
+- add ability to go back/forward in months
 */
